@@ -1,0 +1,15 @@
+---
+- name: deploy-to-tomcat
+  hosts: production
+  become: true
+  tasks:
+      - name: copy webapp.war
+        copy: src=webapp/target/webapp.war dest=/opt/apache-tomcat-9.0.104/webapps
+        notify:
+          - restart
+
+  handlers:
+  - name: restart
+    service:
+        name: "tomcat"
+        state: restarted

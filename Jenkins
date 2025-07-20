@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+    tools {
+           jdk 'jdk11'
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                sh 'mvn clean package -DskipTests=true'
+                }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+                }
+        }
+
+        stage('Deploy to tomcat') {
+            steps {
+                sh 'ansible-playbook playbook_tomcat.yml'
+                }
+        }
+    }
+}
